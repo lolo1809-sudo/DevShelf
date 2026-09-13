@@ -1,8 +1,31 @@
-import { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
-// Importar la librería de analytics y hook de ruta
+// Importar la librería de analytics
 import ReactGA from "react-ga4";
+
+// Importa tu cliente de Supabase
+import { supabase } from "./supabaseClient";
+
+// Importación de componentes
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
+
+// Importación de páginas
+import InicioPages from "./pages/InicioPages";
+import InputsPage from "./pages/InputsPages";
+import ButtonsPage from "./pages/ButtonsPages";
+import SeleccionPage from "./pages/SeleccionPages";
+import ModalesPage from "./pages/ModalesPages";
+import NavegacionPage from "./pages/NavegacionPages";
+import CardsPage from "./pages/CardsPages";
+import FormulariosPage from "./pages/FormulariosPages";
+import TipografiasPage from "./pages/TipografiasPages";
+import JuegosPage from "./pages/JuegosPages";
+import WebsPages from "./pages/WebsPages";
+import FavoritosPage from "./pages/FavoritosPages";
+import NotFound from "./pages/NotFound";
 
 // Inicializar el GA4 con el ID
 ReactGA.initialize("G-S0DE4Y0ZXM");
@@ -13,92 +36,100 @@ function AnalyticsTracker() {
 
   useEffect(() => {
     ReactGA.send({ hitType: "pageview", page: location.pathname });
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Vuelve arriba al cambiar de página
   }, [location]);
 
   return null;
 }
 
-/* ------------------ COMPONENTES -----------------------------*/
-import TituloDescripcion from "./components/TituloDescripcion";
-import Footer from "./components/Footer.jsx";
+// Componente interno para manejar la visibilidad del Header y Sidebar según la ruta
+function LayoutContenido() {
+  const location = useLocation();
+  const esInicio = location.pathname === "/"; // Detecta si estamos en el Home
 
-/* ---------------------- PÁGINAS ------------------------ */
-import Catalogo from "./pages/catalogo_componentes/app_catalogo_componentes.jsx";
-import datos from "./pages/catalogo_componentes/components/datos.json";
-import Consejos from "./pages/consejos_diseno/consejos_diseno.jsx";
-import { Revelar } from "./components/Revelar.jsx";
-import NotFound from "./pages/not_found.jsx";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [filtro, setFiltro] = useState("");
 
-const Inicio = () => (
-  <>
-    <Revelar>
-      <TituloDescripcion />
-    </Revelar>
+  // ==================== 1. LÓGICA DE FAVORITOS ===============
+  const [favoritos, setFavoritos] = useState(() => {
+    const guardados = localStorage.getItem("misFavoritos");
+    return guardados ? JSON.parse(guardados) : [];
+  });
 
-    <div className="min-h-screen w-full bg-[var(--bg-body--inicio)] p-6 md:p-10 flex flex-col items-center">
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Tarjeta 1: Catálogo */}
-        <Link
-          to="/catalogo/inputs"
-          className="lg:col-span-4 h-[400px] bg-[var(--bg-card)] rounded-[32px] shadow-[var(--shadow-card)] border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:scale-[1.02] transition-all flex flex-col justify-center p-8 group overflow-hidden relative"
-        >
-          {/* Imagen de fondo */}
-          <img
-            src="img_secciones_inicio/catalogo_img.webp"
-            alt="Catálogo"
-            fetchpriority="high"
-            className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-300 z-0"
-          />
-          {/* Contenido (z-10 para estar sobre la imagen) */}
-          <div className="relative z-10">
-            <div className="text-6xl mb-4 group-hover:scale-110 transition-transform origin-left">🧩</div>
-            <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-3">Catálogo de Componentes</h2>
-            <p className="text-[var(--text-secondary)] text-lg md:text-xl leading-relaxed w-full max-w-2xl">
-              Explora la mejor colección de componentes reutilizables, listos para copiar y pegar en tus páginas webs.
-            </p>
-          </div>
-        </Link>
+  useEffect(() => {
+    localStorage.setItem("misFavoritos", JSON.stringify(favoritos));
+  }, [favoritos]);
 
-        {/* Tarjeta 2: Consejos de Diseño */}
-        <Link
-          to="/consejos"
-          className="lg:col-span-4 h-[300px] bg-[var(--bg-card)] rounded-[32px] shadow-[var(--shadow-card)] border border-[var(--border-color)] hover:border-[var(--accent-color)] hover:scale-[1.02] transition-all flex flex-col justify-center p-8 group overflow-hidden relative"
-        >
-          <img
-            src="img_secciones_inicio/consejos_diseño_img.webp"
-            alt="Consejos de Diseño"
-            fetchpriority="high"
-            className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-300 z-0"
-          />
-          <div className="relative z-10">
-            <div className="text-5xl mb-3 group-hover:scale-110 transition-transform origin-left">🎨</div>
-            <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Consejos de Diseño</h2>
-            <p className="text-[var(--text-secondary)] text-md max-w-xl">Mejora la UI/UX de tus aplicaciones con tips esenciales de tipografía, espaciado y teoría del color.</p>
-          </div>
-        </Link>
+  const toggleFavorito = (id) => {
+    if (favoritos.includes(id)) {
+      setFavoritos(favoritos.filter((favId) => favId !== id));
+    } else {
+      setFavoritos([...favoritos, id]);
+    }
+  };
 
-        {/*-------------------- ACLARACIÓN------------------------- 
-        Para agregar una nueva tarjeta, copiar el mismo formato (con los mismos estilos de classname), y cambiar las columnas o ancho*/}
-      </div>
-    </div>
-    <Revelar>
-      <Footer />
-    </Revelar>
-  </>
-);
+  // ================= 2. LÓGICA DE DATOS Y SUPABASE ===============
+  const [datos, setDatos] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
-// 3. Configuración del Enrutador
+  useEffect(() => {
+    async function fetchComponentes() {
+      try {
+        const { data, error } = await supabase.from("components").select("*");
+        if (error) throw error;
+        if (data) setDatos(data);
+      } catch (error) {
+        console.error("Error al cargar los componentes de Supabase:", error.message);
+      } finally {
+        setCargando(false);
+      }
+    }
+    fetchComponentes();
+  }, []);
+
+  return (
+    <>
+      {/* Si NO es la página de inicio, muestra el Header */}
+      {!esInicio && <Header onSearch={setFiltro} estado={sidebarOpen} setEstado={setSidebarOpen} />}
+
+      {esInicio ? (
+        // Si es el inicio, renderiza solo la página sin contenedores de catálogo
+        <Routes>
+          <Route path="/" element={<InicioPages datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+        </Routes>
+      ) : (
+        // Si es cualquier otra página del catálogo, muestra el Sidebar y la estructura
+        <div className="flex-container">
+          <Sidebar estaAbierto={sidebarOpen} setEstaAbierto={setSidebarOpen} />
+
+          <main className="content">
+            <Routes>
+              <Route path="/inputs" element={<InputsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/buttons" element={<ButtonsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/seleccion" element={<SeleccionPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/modales" element={<ModalesPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/navegacion" element={<NavegacionPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/cards" element={<CardsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/formularios" element={<FormulariosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/tipografias" element={<TipografiasPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/juegos" element={<JuegosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/paginas" element={<WebsPages datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/favoritos" element={<FavoritosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <AnalyticsTracker />
-      <Routes>
-        <Route path="/" element={<Inicio />} />
-        <Route path="/catalogo*" element={<Catalogo />} />
-        <Route path="/consejos" element={<Consejos />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <LayoutContenido />
+      <Footer />
     </BrowserRouter>
   );
 }

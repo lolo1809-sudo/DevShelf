@@ -1,78 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/</loc>
+      <loc>https://dev-shelf.netlify.app/</loc>
       <priority>1.0</priority>
       <changefreq>weekly</changefreq>
    </url>
-   
-   <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/documentaciones</loc>
-      <priority>0.9</priority>
-   </url>
 
    <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/roadmap</loc>
-      <priority>0.9</priority>
-   </url>
-
-   <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/consejos</loc>
-      <priority>0.9</priority>
-   </url>
-
-   <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/inputs</loc>
+      <loc>https://dev-shelf.netlify.app/inputs</loc>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/buttons</loc>
+      <loc>https://dev-shelf.netlify.app/buttons</loc>
       <priority>0.8</priority>
    </url>
 
     <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/seleccion</loc>
+      <loc>https://dev-shelf.netlify.app/seleccion</loc>
       <priority>0.8</priority>
    </url>
 
     <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/modales</loc>
+      <loc>https://dev-shelf.netlify.app/modales</loc>
       <priority>0.8</priority>
    </url>
 
     <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/navegacion</loc>
+      <loc>https://dev-shelf.netlify.app/navegacion</loc>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/cards</loc>
+      <loc>https://dev-shelf.netlify.app/cards</loc>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/formularios</loc>
+      <loc>https://dev-shelf.netlify.app/formularios</loc>
       <priority>0.8</priority>
    </url>
     
     <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/tipografias</loc>
+      <loc>https://dev-shelf.netlify.app/tipografias</loc>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/juegos</loc>
+      <loc>https://dev-shelf.netlify.app/juegos</loc>
       <priority>0.8</priority>
    </url>
 
     <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/paginas</loc>
+      <loc>https://dev-shelf.netlify.app/paginas</loc>
       <priority>0.8</priority>
    </url>
 
     <url>
-      <loc>https://el-rincon-del-front-end.netlify.app/catalogo/favoritos</loc>
+      <loc>https://dev-shelf.netlify.app/favoritos</loc>
       <priority>0.7</priority>
    </url>
 </urlset>

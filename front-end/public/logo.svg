@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <!-- Tu gradiente de blanco al color acento -->
+    <linearGradient id="ds-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#a0b800" />
+    </linearGradient>
+    
+    <!-- Efecto de resplandor (drop-shadow) -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComponentTransfer in="blur" result="glow">
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Fondo negro con bordes redondeados -->
+  <rect width="400" height="400" rx="90" fill="#000000" />
+  
+  <!-- Texto "DS" centrado -->
+  <text 
+    x="50%" 
+    y="55%" 
+    font-family="Poppins, system-ui, sans-serif" 
+    font-size="200" 
+    font-weight="900" 
+    letter-spacing="-5"
+    text-anchor="middle" 
+    dominant-baseline="middle" 
+    fill="url(#ds-gradient)" 
+    filter="url(#glow)"
+  >
+    DS
+  </text>
+</svg>

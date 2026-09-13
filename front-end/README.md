@@ -1,18 +1,23 @@
-# El Rincón del Front-end
+# DevShelf
 
-# ¿Qué es "El Rincón del Front-end"?
+# ¿Qué es "DevShelf"?
 
-¡Bienvenido a El Rincón del Front-end! Este proyecto es una plataforma integral diseñada para desarrolladores Front-end. Aquí encontrarás desde componentes listos para usar hasta una guía clara para dominar el desarrollo Front-end.
+¡Bienvenido a DevShelf! Este proyecto es una plataforma integral diseñada principalmente para desarrolladores Front-end, aunque tambíen es útil para Back-end. Aquí encontrarás desde componentes listos hasta páginas webs completas y funcionales, con Front-end y Back-end
 
 # ✨ ¿Qué hay en la página?
 
-Catálogo de Componentes: gran variedad de componentes gratuitos, listos para usar en tus proyectos
+La página es un catálogo de componentes, que guarda desde inputs hasta páginas webs completas, todo en un mismo lugar.
 
-Documentaciones Lite: Guías rápidas y al grano sobre conceptos clave, sin rellenos.
+Cada componente es una tarjeta que tiene:
+\_ Una vista interactiva o una imagen (para componentes mas grandes), para previsualizar rápidamente de que se trata
 
-Roadmap Interactivo: Un camino de aprendizaje estructurado para pasar de principiante a avanzado.
+\_ Posee un botón para poder ver la demo, en una página aparte, podrás interactuar libremente y decidir si te gusta o no
 
-Consejos de Diseño: Tips de UI/UX aplicados al desarrollo para que tus webs no solo funcionen, sino que se vean increíbles.
+\_ Si te resulta mas cómodo, puedes descargar el componente, en un archivo.zip
+
+\_ Se puede guardar en favoritos el componente, por si lo necesitas mas adelante
+
+\_ Podrás abrir el repositorio y asi ver el código sin necesidad de descargarlo
 
 ## 🛠️ Stack Tecnológico & Dependencias
 
@@ -56,32 +61,23 @@ Descarga Directa: Obtén componentes en formato .zip con un solo clic.
 
 Favoritos: Guarda tus componentes preferidos mediante localStorage.
 
-Roadmap & Docs: Contenido educativo integrado para tu crecimiento profesional.
-
 # ¿Cómo está organizado?
 
 A continuación voy a explicar la funcón de cada carpeta y archivo:
 
 1\_ src: contiene todo el código de la págin
 
-2\_ pages: las distintas secciónes que aparecen en el inicio, Ej: catálogo de componentes, documentaciones lite, etc.
+2\_ pages: las distintas secciónes con los componentes. Ej: inputs, buttons, formularios, etc
 
-3\_ components: los componentes de React que se repiten
+3\_ components: el código de React que se repiten
 
 4\_ App.jsx: la aplicación de todo el proyecto, que une todos los links con el objeto de Brouse Router
 
 5\_ public: todas las imágenes y archivos públicos
 
 src/
-├── App.jsx #La App que conecta todo
+├── App.jsx # La App que conecta todo
+├── main.jsx
+│── supabaseClient.js # Conexión a la base de datos de Supabase
 ├── components/ # Componentes globales (Footer, Revelar, TituloDescripcion)
-├── pages/ # Todas las páginas del inicio
-│ ├── Catalogo/ # Todo lo referente al catálogo de componentes
-│ │ ├── components/ # Componentes exclusivos del catálogo (BotonFav, BotonDescargar)
-│ │ ├── pages/ # Las sub-páginas (Buttons, Cards, etc.)
-│ │ └── app_catalogo_componentes.jsx # (app del catálogo)
-│ ├── Roadmap/
-│ ├── Documentaciones/
-│ └── ConsejosDiseno/
-├── App.jsx
-└── main.jsx
+└── pages/ # (Buttons, Cards, etc.)

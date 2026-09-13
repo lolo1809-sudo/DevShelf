@@ -9,6 +9,7 @@
     scrollbar-width: thin;
     scrollbar-color: #a0b800 #121212;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -16,6 +17,8 @@
     background: var(--bg-body--inicio);
     color: var(--text-primary);
     min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
   }
 }
 
