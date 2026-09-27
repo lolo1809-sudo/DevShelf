@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
+// Importar librería de Notificación para Login
+import { Toaster } from "sonner";
+
 // Importar la librería de analytics
 import ReactGA from "react-ga4";
 
@@ -26,6 +29,8 @@ import JuegosPage from "./pages/JuegosPages";
 import WebsPages from "./pages/WebsPages";
 import FavoritosPage from "./pages/FavoritosPages";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Checkout from "./components/Checkout";
 
 // Inicializar el GA4 con el ID
 ReactGA.initialize("G-S0DE4Y0ZXM");
@@ -45,12 +50,33 @@ function AnalyticsTracker() {
 // Componente interno para manejar la visibilidad del Header y Sidebar según la ruta
 function LayoutContenido() {
   const location = useLocation();
-  const esInicio = location.pathname === "/"; // Detecta si estamos en el Home
+
+  // Todas las páginas que no tiene Header
+  const esSinHeader = location.pathname === "/" || location.pathname === "/login" || location.pathname === "/checkout";
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filtro, setFiltro] = useState("");
 
-  // ==================== 1. LÓGICA DE FAVORITOS ===============
+  // ================= 1. ESTADO DE USUARIO =================
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    // Obtener sesión inicial
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUsuario(session?.user ?? null);
+    });
+
+    // Escuchar cambios (login, logout) en tiempo real
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUsuario(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // ==================== 2. LÓGICA DE FAVORITOS ===============
   const [favoritos, setFavoritos] = useState(() => {
     const guardados = localStorage.getItem("misFavoritos");
     return guardados ? JSON.parse(guardados) : [];
@@ -68,7 +94,7 @@ function LayoutContenido() {
     }
   };
 
-  // ================= 2. LÓGICA DE DATOS Y SUPABASE ===============
+  // ================= 3. LÓGICA DE DATOS Y SUPABASE ===============
   const [datos, setDatos] = useState([]);
   const [cargando, setCargando] = useState(true);
 
@@ -89,32 +115,33 @@ function LayoutContenido() {
 
   return (
     <>
-      {/* Si NO es la página de inicio, muestra el Header */}
-      {!esInicio && <Header onSearch={setFiltro} estado={sidebarOpen} setEstado={setSidebarOpen} />}
+      {/* Si NO es alguna página sin Header, muestra el Header */}
+      {!esSinHeader && <Header onSearch={setFiltro} estado={sidebarOpen} setEstado={setSidebarOpen} />}
 
-      {esInicio ? (
-        // Si es el inicio, renderiza solo la página sin contenedores de catálogo
+      {esSinHeader ? (
         <Routes>
-          <Route path="/" element={<InicioPages datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+          <Route path="/" element={<InicioPages datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       ) : (
-        // Si es cualquier otra página del catálogo, muestra el Sidebar y la estructura
+        // Si es cualquier otra página, muestra el Header
         <div className="flex-container">
           <Sidebar estaAbierto={sidebarOpen} setEstaAbierto={setSidebarOpen} />
 
           <main className="content">
             <Routes>
-              <Route path="/inputs" element={<InputsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/buttons" element={<ButtonsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/seleccion" element={<SeleccionPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/modales" element={<ModalesPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/navegacion" element={<NavegacionPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/cards" element={<CardsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/formularios" element={<FormulariosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/tipografias" element={<TipografiasPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/juegos" element={<JuegosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/paginas" element={<WebsPages datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
-              <Route path="/favoritos" element={<FavoritosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} />} />
+              <Route path="/inputs" element={<InputsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/buttons" element={<ButtonsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/seleccion" element={<SeleccionPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/modales" element={<ModalesPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/navegacion" element={<NavegacionPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/cards" element={<CardsPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/formularios" element={<FormulariosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/tipografias" element={<TipografiasPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/juegos" element={<JuegosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/paginas" element={<WebsPages datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
+              <Route path="/favoritos" element={<FavoritosPage datos={datos} filtro={filtro} favoritos={favoritos} toggleFav={toggleFavorito} usuario={usuario} />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
@@ -127,6 +154,7 @@ function LayoutContenido() {
 export default function App() {
   return (
     <BrowserRouter>
+      <Toaster richColors position="top-right" theme="dark" />
       <AnalyticsTracker />
       <LayoutContenido />
       <Footer />

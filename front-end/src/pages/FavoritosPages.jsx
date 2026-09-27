@@ -2,7 +2,7 @@ import React from "react";
 import EstadoVacio from "../components/EstadoVacio";
 import TarjetaComponente from "../components/TarjetaComponente";
 
-export default function FavoritosPage({ datos, favoritos, toggleFav, filtro }) {
+export default function FavoritosPage({ datos, favoritos, toggleFav, filtro, usuario }) {
   // 1. PROTECCIÓN: Si datos no ha cargado aún, no hacemos nada
   if (!datos) return <h2 className="text-white text-center mt-10">Cargando datos...</h2>;
 
@@ -32,7 +32,7 @@ export default function FavoritosPage({ datos, favoritos, toggleFav, filtro }) {
       {/* Contenedor Grid Principal */}
       <div className="w-[95%] max-w-[1300px] mx-auto pt-[100px] pb-[50px] grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] justify-center gap-y-[50px] gap-x-[40px] cursor-[url('/cursor.svg')_16_16,_auto] [&_input]:cursor-[url('/pointer.svg')_16_16,_text]">
         {itemsFavoritos.map((item) => (
-          <TarjetaComponente key={item.id} item={item} favoritos={favoritos} toggleFav={toggleFav} />
+          <TarjetaComponente key={item.id} item={item} favoritos={favoritos} toggleFav={toggleFav} usuario={usuario} />
         ))}
 
         {/* Mensaje condicional de resultados vacíos */}

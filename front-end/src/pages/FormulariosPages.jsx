@@ -2,7 +2,7 @@ import React from "react";
 import EstadoVacio from "../components/EstadoVacio";
 import TarjetaComponente from "../components/TarjetaComponente";
 
-export default function FormulariosPage({ datos, filtro, favoritos, toggleFav }) {
+export default function FormulariosPage({ datos, filtro, favoritos, toggleFav, usuario }) {
   // Función para quitar tildes y pasar a minúsculas
   const normalizar = (texto) => {
     return texto
@@ -25,7 +25,7 @@ export default function FormulariosPage({ datos, filtro, favoritos, toggleFav })
         {/* Grilla de tarjetas */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] justify-center gap-y-[50px] gap-x-[40px] cursor-[url('/cursor.svg')_16_16,_auto] [&_input]:cursor-[url('/pointer.svg')_16_16,_text]">
           {formulariosFiltrados.map((item) => (
-            <TarjetaComponente key={item.id} item={item} favoritos={favoritos} toggleFav={toggleFav} />
+            <TarjetaComponente key={item.id} item={item} favoritos={favoritos} toggleFav={toggleFav} usuario={usuario} />
           ))}
 
           {formulariosFiltrados.length === 0 && <EstadoVacio mensaje="No se encontraron formularios con ese nombre." />}
